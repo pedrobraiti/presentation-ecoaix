@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Análise Inteligente de Documentos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            color: white;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 30px;
+            align-items: start;
+        }
+        
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #64b5f6;
+        }
+        
+        .input-section {
+            text-align: center;
+        }
+        
+        .document-types {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .doc-type {
+            background: rgba(100, 181, 246, 0.2);
+            padding: 15px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 14px;
+            border: 1px solid rgba(100, 181, 246, 0.3);
+        }
+        
+        .doc-icon {
+            font-size: 24px;
+        }
+        
+        .process-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .ai-analysis {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .ai-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .analysis-types {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .analysis-type {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .bifurcation {
+            display: flex;
+            gap: 30px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .branch {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid rgba(100, 181, 246, 0.3);
+        }
+        
+        .branch-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #81c784;
+        }
+        
+        .process-step {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            border-left: 4px solid #64b5f6;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .tech-item {
+            background: linear-gradient(135deg, #42a5f5 0%, #1976d2 100%);
+            padding: 6px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .output-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .output-box {
+            background: rgba(129, 199, 132, 0.2);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(129, 199, 132, 0.4);
+        }
+        
+        .output-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #81c784;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            padding: 8px 0;
+            font-size: 13px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .arrow {
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 15px solid #64b5f6;
+            margin: 10px auto;
+        }
+        
+        .side-arrow {
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 15px solid #64b5f6;
+            margin: 20px auto;
+        }
+        
+        .rag-explanation {
+            background: rgba(255, 193, 7, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 1px solid rgba(255, 193, 7, 0.4);
+        }
+        
+        .rag-title {
+            font-weight: 600;
+            color: #ffca28;
+            margin-bottom: 8px;
+        }
+        
+        .rag-description {
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .bifurcation {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Input Section -->
+        <div class="section input-section">
+            <div class="section-title">📄 ENTRADA DE DOCUMENTOS</div>
+            
+            <div class="document-types">
+                <div class="doc-type">
+                    <span class="doc-icon">📄</span>
+                    PDF
+                </div>
+                <div class="doc-type">
+                    <span class="doc-icon">📝</span>
+                    DOCX
+                </div>
+                <div class="doc-type">
+                    <span class="doc-icon">📋</span>
+                    TXT
+                </div>
+            </div>
+            
+            <div style="background: rgba(255, 255, 255, 0.15); padding: 15px; border-radius: 10px; margin-top: 15px;">
+                <strong>+ Prompt Opcional</strong>
+                <div style="font-size: 12px; margin-top: 5px; opacity: 0.8;">
+                    Instruções específicas para análise
+                </div>
+            </div>
+        </div>
+        
+        <!-- Process Flow -->
+        <div class="process-flow">
+            <div class="arrow"></div>
+            
+            <div class="ai-analysis">
+                <div class="ai-title">🤖 ANÁLISE INTELIGENTE</div>
+                <div style="font-size: 14px; margin-bottom: 15px;">
+                    A IA categoriza automaticamente o tipo de análise necessária
+                </div>
+                
+                <div class="analysis-types">
+                    <div class="analysis-type">Carimbo</div>
+                    <div class="analysis-type">Estrutura</div>
+                    <div class="analysis-type">Circuito Elétrico</div>
+                </div>
+            </div>
+            
+            <div class="arrow"></div>
+            
+            <div class="bifurcation">
+                <!-- Branch 1: Stamp and Structure Analysis -->
+                <div class="branch">
+                    <div class="branch-title">📋 ANÁLISE DE CARIMBO E ESTRUTURA</div>
+                    
+                    <div class="process-step">
+                        <strong>Extração Inteligente</strong><br>
+                        Textos, informações vetoriais, espessuras, margens e posicionamento
+                        <div class="tech-stack">
+                            <div class="tech-item">Node.js</div>
+                            <div class="tech-item">PDF-lib</div>
+                        </div>
+                    </div>
+                    
+                    <div class="process-step">
+                        <strong>Detecção Visual</strong><br>
+                        Identificação de campos vazios e áreas preenchidas
+                        <div class="tech-stack">
+                            <div class="tech-item">YOLO ML</div>
+                            <div class="tech-item">Computer Vision</div>
+                        </div>
+                    </div>
+                    
+                    <div class="process-step">
+                        <strong>Validação</strong><br>
+                        Comparação com modelos de carimbo padrão
+                        <div class="tech-stack">
+                            <div class="tech-item">Pattern Matching</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Branch 2: Circuit Analysis -->
+                <div class="branch">
+                    <div class="branch-title">⚡ ANÁLISE DE CIRCUITO</div>
+                    
+                    <div class="process-step">
+                        <strong>Delimitação Inteligente</strong><br>
+                        Identifica automaticamente a área do circuito no documento
+                        <div class="tech-stack">
+                            <div class="tech-item">Image Processing</div>
+                        </div>
+                    </div>
+                    
+                    <div class="process-step">
+                        <strong>Detecção de Elementos</strong><br>
+                        Símbolos elétricos, conexões e componentes
+                        <div class="tech-stack">
+                            <div class="tech-item">YOLO</div>
+                            <div class="tech-item">RAG</div>
+                        </div>
+                    </div>
+                    
+                    <div class="rag-explanation">
+                        <div class="rag-title">💡 RAG (Retrieval-Augmented Generation)</div>
+                        <div class="rag-description">
+                            Sistema que combina busca em base de conhecimento com IA generativa. 
+                            Busca informações específicas sobre símbolos elétricos e normas técnicas 
+                            para melhorar a precisão da análise.
+                        </div>
+                    </div>
+                    
+                    <div class="process-step">
+                        <strong>Contextualização Visual</strong><br>
+                        Interpretação avançada de imagens e diagramas
+                        <div class="tech-stack">
+                            <div class="tech-item">Vision API</div>
+                            <div class="tech-item">OpenAI</div>
+                        </div>
+                    </div>
+                    
+                    <div class="process-step">
+                        <strong>Estruturação Final</strong><br>
+                        Dados organizados em JSON para consultas específicas
+                        <div class="tech-stack">
+                            <div class="tech-item">JSON API</div>
+                            <div class="tech-item">OpenAI GPT</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Output Section -->
+        <div class="section output-section">
+            <div class="section-title">📊 RESULTADOS</div>
+            
+            <div class="side-arrow"></div>
+            
+            <div class="output-box">
+                <div class="output-title">✅ Validação de Carimbos</div>
+                <ul class="feature-list">
+                    <li>Campos obrigatórios preenchidos</li>
+                    <li>Conformidade com padrões</li>
+                    <li>Detecção de inconsistências</li>
+                </ul>
+            </div>
+            
+            <div class="output-box">
+                <div class="output-title">⚡ Análise de Circuitos</div>
+                <ul class="feature-list">
+                    <li>Identificação de componentes</li>
+                    <li>Validação de conexões</li>
+                    <li>Conformidade técnica</li>
+                    <li>Relatórios detalhados</li>
+                </ul>
+            </div>
+            
+            <div class="output-box">
+                <div class="output-title">🎯 Insights Inteligentes</div>
+                <ul class="feature-list">
+                    <li>Respostas a perguntas específicas</li>
+                    <li>Análise comparativa</li>
+                    <li>Sugestões de melhorias</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
