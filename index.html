@@ -3,579 +3,341 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Análise Inteligente de Documentos</title>
+    <title>Fluxograma - Sistema de Análise de Diagramas</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 75%, #64748b 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            color: #e2e8f0;
-            padding: 40px 20px;
-            line-height: 1.6;
-        }
-        
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
         }
         
         .container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .title {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 40px;
+            font-size: 2.2em;
+            font-weight: 300;
+        }
+        
+        .flow-container {
             display: flex;
             flex-direction: column;
-            gap: 40px;
+            gap: 20px;
             align-items: center;
         }
         
-        .section {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 32px;
-            border: 1px solid rgba(96, 165, 250, 0.15);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(96, 165, 250, 0.05);
-            width: 100%;
-            max-width: 700px;
-            position: relative;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: fadeInUp 0.8s ease-out;
+        .phase {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 25px;
+            width: 90%;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
         }
         
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .phase:hover {
+            transform: translateY(-5px);
         }
         
-        .section:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), 0 0 60px rgba(96, 165, 250, 0.1);
-            border-color: rgba(96, 165, 250, 0.25);
-        }
-        
-        .section-title {
-            font-size: 20px;
+        .phase-title {
+            font-size: 1.4em;
             font-weight: 600;
-            margin-bottom: 24px;
-            text-align: center;
-            background: linear-gradient(135deg, #60a5fa, #3b82f6, #1d4ed8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: 0.5px;
-            animation: shimmer 3s ease-in-out infinite;
-        }
-        
-        @keyframes shimmer {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
-        }
-        
-        .input-section {
+            color: #2c3e50;
+            margin-bottom: 15px;
             text-align: center;
         }
         
-        .document-types {
+        .tech-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
         }
         
-        .doc-type {
-            background: linear-gradient(135deg, rgba(96, 165, 250, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
-            padding: 20px 16px;
-            border-radius: 16px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 14px;
-            font-weight: 500;
-            border: 1px solid rgba(96, 165, 250, 0.2);
+        .tech-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            border: 2px solid #e74c3c;
             transition: all 0.3s ease;
         }
         
-        .doc-type:hover {
-            background: linear-gradient(135deg, rgba(96, 165, 250, 0.15) 0%, rgba(59, 130, 246, 0.1) 100%);
-            transform: translateY(-1px);
+        .tech-card:hover {
+            border-color: #c0392b;
+            box-shadow: 0 5px 15px rgba(231,76,60,0.2);
         }
         
-        .doc-extension {
-            font-size: 18px;
+        .tech-name {
             font-weight: 700;
-            color: #60a5fa;
-        }
-        
-        .process-flow {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-            align-items: center;
-            width: 100%;
-        }
-        
-        .ai-analysis {
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #6366f1 100%);
-            background-size: 200% 200%;
-            animation: gradientFlow 8s ease infinite;
-            padding: 32px;
-            border-radius: 20px;
-            text-align: center;
-            width: 100%;
-            box-shadow: 0 12px 40px rgba(79, 70, 229, 0.4), 0 0 60px rgba(124, 58, 237, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .ai-analysis::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent);
-            animation: shine 4s ease-in-out infinite;
-        }
-        
-        @keyframes gradientFlow {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-        
-        @keyframes shine {
-            0% { transform: rotate(0deg) translate(-100%, -100%); }
-            100% { transform: rotate(0deg) translate(100%, 100%); }
-        }
-        
-        .ai-title {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            color: white;
-        }
-        
-        .ai-description {
-            font-size: 15px;
-            margin-bottom: 20px;
-            opacity: 0.9;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .analysis-types {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        
-        .analysis-type {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 10px 16px;
-            border-radius: 25px;
-            font-size: 13px;
-            font-weight: 500;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-        }
-        
-        .bifurcation {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 32px;
-            width: 100%;
-            margin-top: 20px;
-        }
-        
-        .branch {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
-            border-radius: 20px;
-            padding: 28px;
-            border: 1px solid rgba(129, 199, 132, 0.2);
-            position: relative;
-        }
-        
-        .branch::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #10b981, #34d399);
-            border-radius: 20px 20px 0 0;
-        }
-        
-        .branch-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            text-align: center;
-            color: #34d399;
-        }
-        
-        .process-step {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
-            padding: 18px;
-            border-radius: 12px;
-            margin-bottom: 16px;
-            font-size: 14px;
-            border-left: 3px solid #60a5fa;
-            transition: all 0.3s ease;
-        }
-        
-        .process-step:hover {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
-        }
-        
-        .step-title {
-            font-weight: 600;
-            color: #e2e8f0;
-            margin-bottom: 6px;
-        }
-        
-        .step-description {
-            color: #a0aec0;
-            font-size: 13px;
-            margin-bottom: 12px;
-        }
-        
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 12px;
-        }
-        
-        .tech-item {
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 500;
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .output-section {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-            width: 100%;
-            max-width: 700px;
-        }
-        
-        .output-box {
-            background: linear-gradient(135deg, rgba(34, 197, 94, 0.08) 0%, rgba(22, 163, 74, 0.04) 100%);
-            padding: 24px;
-            border-radius: 16px;
-            border: 1px solid rgba(34, 197, 94, 0.2);
-            transition: all 0.3s ease;
-        }
-        
-        .output-box:hover {
-            background: linear-gradient(135deg, rgba(34, 197, 94, 0.12) 0%, rgba(22, 163, 74, 0.06) 100%);
-            transform: translateY(-1px);
-        }
-        
-        .output-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: #22c55e;
-        }
-        
-        .feature-list {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .feature-list li {
-            padding: 10px 0;
-            font-size: 14px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            position: relative;
-            padding-left: 20px;
-        }
-        
-        .feature-list li::before {
-            content: '●';
-            position: absolute;
-            left: 0;
-            color: #22c55e;
-            font-weight: bold;
-        }
-        
-        .feature-list li:last-child {
-            border-bottom: none;
-        }
-        
-        .arrow {
-            width: 2px;
-            height: 40px;
-            background: linear-gradient(180deg, #60a5fa, #3b82f6);
-            position: relative;
-            border-radius: 1px;
-            margin: 0 auto;
-            align-self: center;
-        }
-        
-        .arrow::after {
-            content: '';
-            position: absolute;
-            bottom: -6px;
-            left: -4px;
-            width: 0;
-            height: 0;
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-top: 12px solid #3b82f6;
-        }
-        
-        .rag-explanation {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.05) 100%);
-            padding: 20px;
-            border-radius: 12px;
-            margin: 16px 0;
-            border: 1px solid rgba(245, 158, 11, 0.3);
-        }
-        
-        .rag-title {
-            font-weight: 600;
-            color: #f59e0b;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-        
-        .rag-description {
-            font-size: 13px;
-            line-height: 1.5;
-            color: #d1d5db;
-        }
-        
-        .prompt-info {
-            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(139, 69, 193, 0.05) 100%);
-            padding: 20px;
-            border-radius: 12px;
-            margin-top: 20px;
-            border: 1px solid rgba(168, 85, 247, 0.3);
-        }
-        
-        .prompt-label {
-            font-weight: 600;
-            color: #a855f7;
+            color: #e74c3c;
+            font-size: 1.1em;
             margin-bottom: 8px;
         }
         
-        .prompt-description {
-            font-size: 13px;
-            color: #c4b5fd;
+        .tech-function {
+            color: #34495e;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        
+        .arrow {
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 25px solid #3498db;
+            margin: 10px auto;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
+        .initialization {
+            border-left-color: #9b59b6;
+        }
+        
+        .interface {
+            border-left-color: #3498db;
+        }
+        
+        .processing {
+            border-left-color: #f39c12;
+        }
+        
+        .ai {
+            border-left-color: #e74c3c;
+        }
+        
+        .response {
+            border-left-color: #27ae60;
+        }
+        
+        .display {
+            border-left-color: #2980b9;
+        }
+        
+        .maintenance {
+            border-left-color: #8e44ad;
+        }
+        
+        .flow-description {
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Input Section -->
-        <div class="section input-section">
-            <div class="section-title">ENTRADA DE DOCUMENTOS</div>
+        <h1 class="title">🔌 Sistema de Análise de Diagramas Unifilares</h1>
+        <p style="text-align: center; color: #7f8c8d; margin-bottom: 40px;">
+            Fluxo completo: do boot do sistema até a entrega do resultado
+        </p>
+        
+        <div class="flow-container">
             
-            <div class="document-types">
-                <div class="doc-type">
-                    <div class="doc-extension">PDF</div>
-                    <div>Documentos</div>
-                </div>
-                <div class="doc-type">
-                    <div class="doc-extension">DOCX</div>
-                    <div>Textos</div>
-                </div>
-                <div class="doc-type">
-                    <div class="doc-extension">TXT</div>
-                    <div>Simples</div>
+            <!-- FASE 1: INICIALIZAÇÃO -->
+            <div class="phase initialization">
+                <div class="phase-title">🚀 FASE 1: INICIALIZAÇÃO DO SISTEMA</div>
+                <div class="flow-description">Configuração e preparação do ambiente antes de qualquer interação</div>
+                <div class="tech-grid">
+                    <div class="tech-card">
+                        <div class="tech-name">PYTHON 3.8+</div>
+                        <div class="tech-function">Inicializa o interpretador e carrega todas as dependências do sistema</div>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-name">PYTHON-DOTENV</div>
+                        <div class="tech-function">Carrega variáveis de ambiente do arquivo .env (API keys, configurações)</div>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-name">DATACLASSES + TYPING</div>
+                        <div class="tech-function">Define estruturas de dados e valida tipos para configurações do sistema</div>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-name">JSON</div>
+                        <div class="tech-function">Carrega exemplos pré-configurados e templates de análise</div>
+                    </div>
                 </div>
             </div>
             
-            <div class="prompt-info">
-                <div class="prompt-label">Prompt Opcional</div>
-                <div class="prompt-description">
-                    Instruções específicas para direcionamento da análise
+            <div class="arrow"></div>
+            
+            <!-- FASE 2: INTERFACE -->
+            <div class="phase interface">
+                <div class="phase-title">🖥️ FASE 2: INICIALIZAÇÃO DA INTERFACE</div>
+                <div class="flow-description">Criação da interface web e preparação para receber input do usuário</div>
+                <div class="tech-grid">
+                    <div class="tech-card">
+                        <div class="tech-name">STREAMLIT</div>
+                        <div class="tech-function">Renderiza a interface web, cria componentes de upload e chat</div>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-name">STREAMLIT SESSION STATE</div>
+                        <div class="tech-function">Inicializa estado vazio para armazenar: histórico de chat, PDF carregado, configurações de sessão</div>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-name">PADRÃO MVC</div>
+                        <div class="tech-function">Organiza separação: View (Streamlit), Model (classes de dados), Controller (lógica)</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow"></div>
+            
+            <!-- FASE 3: INPUT DO USUÁRIO -->
+            <div class="phase interface">
+                <div class="phase-title">📁 FASE 3: RECEBIMENTO DO PDF</div>
+                <div class="flow-description">Usuário faz upload do diagrama unifilar em formato PDF</div>
+                <div class="tech-grid">
+                    <div class="tech-card">
+                        <div class="tech-name">STREAMLIT FILE UPLOADER</div>
+                        <div class="tech-function">Captura o arquivo PDF enviado pelo usuário via drag-and-drop ou seleção</div>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-name">STREAMLIT SESSION STATE</div>
+                        <div class="tech-function">Armazena o PDF em memória para uso durante toda a sessão</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow"></div>
+            
+            <!-- FASE 4: PROCESSAMENTO -->
+            <div class="phase processing">
+                <div class="phase-title">⚙️ FASE 4: PROCESSAMENTO DO ARQUIVO</div>
+                <div class="flow-description">Preparação do PDF para envio à API de IA</div>
+                <div class="tech-grid">
+                    <div class="tech-card">
+                        <div class="tech-name">PATHLIB</div>
+                        <div class="tech-function">Manipula caminhos de arquivo de forma segura e multiplataforma</div>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-name">BASE64</div>
+                        <div class="tech-function">Converte o PDF binário para string Base64 (formato exigido pela OpenAI Vision API)</div>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-name">DATACLASSES</div>
+                        <div class="tech-function">Estrutura os dados de configuração para o prompt da IA (tipo de análise, parâmetros)</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow"></div>
+            
+            <!-- FASE 5: IA -->
+            <div class="phase ai">
+                <div class="phase-title">🤖 FASE 5: ANÁLISE POR INTELIGÊNCIA ARTIFICIAL</div>
+                <div class="flow-description">Envio para OpenAI e processamento do diagrama</div>
+                <div class="tech-grid">
+                    <div class="tech-card">
+                        <div class="tech-name">OPENAI PYTHON SDK</div>
+                        <div class="tech-function">Gerencia autenticação, rate limiting e comunicação com a API da OpenAI</div>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-name">GPT-4.1 VISION API</div>
+                        <div class="tech-function">Analisa o diagrama PDF, identifica componentes elétricos e interpreta conexões</div>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-name">STRUCTURED OUTPUTS</div>
+                        <div class="tech-function">Força a IA a retornar dados em formato JSON estruturado predefinido</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow"></div>
+            
+            <!-- FASE 6: PROCESSAMENTO DA RESPOSTA -->
+            <div class="phase response">
+                <div class="phase-title">📊 FASE 6: PROCESSAMENTO DA RESPOSTA</div>
+                <div class="flow-description">Tratamento e estruturação dos dados retornados pela IA</div>
+                <div class="tech-grid">
+                    <div class="tech-card">
+                        <div class="tech-name">JSON</div>
+                        <div class="tech-function">Desserializa a resposta estruturada da IA em objetos Python</div>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-name">DATACLASSES + TYPING</div>
+                        <div class="tech-function">Valida tipos de dados e estrutura a análise técnica em classes organizadas</div>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-name">PYTHON OOP</div>
+                        <div class="tech-function">Encapsula lógicas de processamento em métodos especializados por tipo de componente</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow"></div>
+            
+            <!-- FASE 7: EXIBIÇÃO -->
+            <div class="phase display">
+                <div class="phase-title">📋 FASE 7: EXIBIÇÃO DOS RESULTADOS</div>
+                <div class="flow-description">Apresentação do descritivo técnico na interface</div>
+                <div class="tech-grid">
+                    <div class="tech-card">
+                        <div class="tech-name">STREAMLIT MARKDOWN</div>
+                        <div class="tech-function">Renderiza o descritivo técnico formatado com títulos, listas e estruturas</div>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-name">STREAMLIT CHAT</div>
+                        <div class="tech-function">Exibe resultado em formato de conversa, permite interação adicional</div>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-name">STREAMLIT SESSION STATE</div>
+                        <div class="tech-function">Armazena histórico da análise para consultas futuras na mesma sessão</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow"></div>
+            
+            <!-- FASE 8: MANUTENÇÃO -->
+            <div class="phase maintenance">
+                <div class="phase-title">🔄 FASE 8: MANUTENÇÃO DO ESTADO</div>
+                <div class="flow-description">Sistema fica aguardando novas interações ou uploads</div>
+                <div class="tech-grid">
+                    <div class="tech-card">
+                        <div class="tech-name">STREAMLIT SESSION STATE</div>
+                        <div class="tech-function">Mantém PDF, histórico de chat e configurações em memória</div>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-name">STREAMLIT RERUN</div>
+                        <div class="tech-function">Monitora mudanças na interface e reprocessa quando necessário</div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div style="margin-top: 40px; padding: 20px; background: #f8f9fa; border-radius: 10px; border-left: 5px solid #2ecc71;">
+            <h3 style="color: #27ae60; margin-bottom: 15px;">🔮 IMPLEMENTAÇÕES FUTURAS</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px;">
+                <div style="background: white; padding: 15px; border-radius: 8px; border: 2px solid #2ecc71;">
+                    <strong style="color: #27ae60;">LAYOUTPARSER</strong><br>
+                    <small>Será inserido na Fase 4 para segmentar automaticamente regiões do PDF (diagrama vs. carimbo vs. textos)</small>
+                </div>
+                <div style="background: white; padding: 15px; border-radius: 8px; border: 2px solid #2ecc71;">
+                    <strong style="color: #27ae60;">OPENCV</strong><br>
+                    <small>Será inserido na Fase 4 para manipulação visual (zoom, corte, realce) antes do envio à IA</small>
                 </div>
             </div>
         </div>
         
-        <!-- Process Flow -->
-        <div class="process-flow">
-            <div class="arrow"></div>
-            
-            <div class="ai-analysis">
-                <div class="ai-title">ANÁLISE INTELIGENTE</div>
-                <div class="ai-description">
-                    A IA categoriza o tipo de análise necessária através do prompt fornecido, caso não haja prompt, ela faz uma análise completa do arquivo.
-                </div>
-                
-                <div class="analysis-types">
-                    <div class="analysis-type">Carimbo</div>
-                    <div class="analysis-type">Estrutura</div>
-                    <div class="analysis-type">Circuito Elétrico</div>
-                </div>
-            </div>
-            
-            <div class="arrow"></div>
-            
-            <div class="bifurcation">
-                <!-- Branch 1: Stamp and Structure Analysis -->
-                <div class="branch">
-                    <div class="branch-title">ANÁLISE DE CARIMBO E ESTRUTURA</div>
-                    
-                    <div class="process-step">
-                        <div class="step-title">Extração Inteligente</div>
-                        <div class="step-description">Textos, informações vetoriais, espessuras, margens e posicionamento</div>
-                        <div class="tech-stack">
-                            <div class="tech-item">pdf-lib</div>
-                            <div class="tech-item">pdfjs-dist</div>
-                            <div class="tech-item">pdf-parse</div>
-                            <div class="tech-item">Sharp</div>
-                        </div>
-                    </div>
-                    
-                    <div class="process-step">
-                        <div class="step-title">Detecção Visual</div>
-                        <div class="step-description">Identificação de campos vazios e áreas preenchidas</div>
-                        <div class="tech-stack">
-                            <div class="tech-item">YOLO</div>
-                            <div class="tech-item">OpenCV</div>
-                            <div class="tech-item">TensorFlow</div>
-                        </div>
-                    </div>
-                    
-                    <div class="process-step">
-                        <div class="step-title">Validação</div>
-                        <div class="step-description">Verifica se o arquivo está em conformidade com critérios definidos no banco de dados.</div>
-                        <div class="tech-stack">
-                            <div class="tech-item">PostgreSQL</div>
-                            <div class="tech-item">Pattern Matching</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Branch 2: Circuit Analysis -->
-                <div class="branch">
-                    <div class="branch-title">ANÁLISE DE CIRCUITO</div>
-                    
-                    <div class="process-step">
-                        <div class="step-title">Delimitação Inteligente</div>
-                        <div class="step-description">Utiliza visão computacional para identificar automaticamente a região princiapl do desenho técnico no documento.</div>
-                        <div class="tech-stack">
-                            <div class="tech-item">OpenCV</div>
-                            <div class="tech-item">Image Processing</div>
-                        </div>
-                    </div>
-                    
-                    <div class="process-step">
-                        <div class="step-title">Detecção de Elementos</div>
-                        <div class="step-description">Símbolos elétricos, conexões, componentes e arranjos.</div>
-                        <div class="tech-stack">
-                            <div class="tech-item">YOLO</div>
-                            <div class="tech-item">RAG</div>
-                            <div class="tech-item">Computer Vision</div>
-                        </div>
-                    </div>
-                    
-                    <div class="rag-explanation">
-                        <div class="rag-title">RAG (Retrieval-Augmented Generation)</div>
-                        <div class="rag-description">
-                            Integra mecanismos de busca em bases técnicas com inteligência artificial
-                            generativa, permitindo a consulta precisa de símbolos normativos e referências
-                            técnicas para aprimorar a qualidade da análise.
-                        </div>
-                    </div>
-                    
-                    <div class="process-step">
-                        <div class="step-title">Contextualização Visual</div>
-                        <div class="step-description">Interpretação avançada de imagens e diagramas</div>
-                        <div class="tech-stack">
-                            <div class="tech-item">Vision API</div>
-                            <div class="tech-item">OpenAI GPT</div>
-                        </div>
-                    </div>
-                    
-                    <div class="process-step">
-                        <div class="step-title">Estruturação Final</div>
-                        <div class="step-description">Dados organizados em JSON para consultas específicas</div>
-                        <div class="tech-stack">
-                            <div class="tech-item">JSON API</div>
-                            <div class="tech-item">OpenAI GPT</div>
-                            <div class="tech-item">Structured Data</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Output Section -->
-        <div class="section output-section">
-            <div class="section-title">RESULTADOS</div>
-            
-            <div class="arrow"></div>
-            
-            <div class="output-box">
-                <div class="output-title">Validação de Carimbos</div>
-                <ul class="feature-list">
-                    <li>Campos obrigatórios preenchidos</li>
-                    <li>Conformidade com padrões</li>
-                    <li>Detecção de inconsistências</li>
-                </ul>
-            </div>
-            
-            <div class="output-box">
-                <div class="output-title">Análise de Circuitos</div>
-                <ul class="feature-list">
-                    <li>Identificação de componentes</li>
-                    <li>Categorização de arranjos</li>
-                    <li>Validação de conexões</li>
-                    <li>Conformidade técnica</li>
-                    <li>Relatórios detalhados</li>
-                </ul>
-            </div>
-            
-            <div class="output-box">
-                <div class="output-title">Insights Inteligentes</div>
-                <ul class="feature-list">
-                    <li>Aponta as conformidas e erros</li>
-                    <li>Fornece dicas e avisos importantes</li>
-                    <li>Análise comparativa</li>
-                </ul>
-            </div>
-            
-            <div class="output-box">
-                <div class="output-title">Chat em tempo real</div>
-                <ul class="feature-list">
-                    <li>Possibilita conversação em tempo real pelo chat</li>
-                    <li>Guarda memória de todos os arquivos analisados para fornecer respostas precisas</li>
-                    <li>É capaz de fazer revisões se necessário</li>
-                </ul>
-            </div>
-        </div>
     </div>
 </body>
 </html>
